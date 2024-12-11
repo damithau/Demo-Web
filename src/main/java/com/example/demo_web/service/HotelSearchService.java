@@ -89,6 +89,7 @@ public List<SearchResultDto> searchHotels(SearchCriteriaDto criteria) {
         // Iterate over room requests
         for (SearchCriteriaDto.RoomRequest request : criteria.getRoomRequests()) {
             boolean requestFulfilled = false;
+            double markedUpPrice;
 
             // Try to find a room type in the current hotel that can fulfill the request
             for (RoomType roomType : contract.getRoomTypes()) {
@@ -101,10 +102,10 @@ public List<SearchResultDto> searchHotels(SearchCriteriaDto criteria) {
                             availableRooms.get(roomType.getRoomType()) - request.getNoOfRooms());
 
                     // Calculate the marked-up price
-                    double markedUpPrice = roomType.getPricePerPerson() *
+                    markedUpPrice = roomType.getPricePerPerson() *
                             (1 + contract.getMarkupPercentage() / 100) *
                             criteria.getNoOfNights() *
-                            request.getNoOfAdults();
+                            request.getNoOfAdults()*request.getNoOfRooms();
 
                     // Add the room type to the result
                     SearchResultDto.RoomTypeResult roomTypeResult = new SearchResultDto.RoomTypeResult();

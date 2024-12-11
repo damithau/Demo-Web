@@ -6,6 +6,8 @@ import com.example.demo_web.model.HotelContract;
 import com.example.demo_web.model.RoomType;
 import com.example.demo_web.repository.HotelContractRepository;
 import com.example.demo_web.utils.ContractMapper;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class HotelContractService
@@ -68,7 +71,7 @@ public class HotelContractService
             RoomType room = new RoomType();
             room.setRoomType(roomDto.getRoomType());
             room.setPricePerPerson(roomDto.getPricePerPerson());
-            room.setAmountOfRooms(roomDto.getNoOfRooms());
+            room.setAmountOfRooms(roomDto.getAmountOfRooms());
             room.setMaxAdults(roomDto.getMaxAdults());
             room.setHotelContract(contract); // Set Parent
             return room;
@@ -82,5 +85,27 @@ public class HotelContractService
         // Convert Back to DTO
         return ContractMapper.entityToDto(savedContract);
     }
+    @Transactional
+    public void updateMarkupPercentage(Long contractId, double newMarkupPercentage) {
+        if (newMarkupPercentage < 0) {
+            throw new IllegalArgumentException("Markup percentage must be positive.");
+        }
+
+        int rowsUpdated = contractRepository.updateMarkupPercentage(contractId, newMarkupPercentage);
+
+        if (rowsUpdated == 0) {
+            throw new EntityNotFoundException("No contract found with ID: " + contractId);
+        }
+    }
+
+
+    public List<HotelContractDto> getContractsWithRoomTypes() {
+        List<HotelContract> contracts = contractRepository.findAll();
+        return contracts.stream()
+                .map(ContractMapper::entityToDto)
+                .collect(Collectors.toList());
+    }
+
+
 
 }

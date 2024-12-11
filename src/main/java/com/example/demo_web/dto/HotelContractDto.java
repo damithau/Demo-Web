@@ -78,4 +78,44 @@ public class HotelContractDto {
     public void setRoomTypes(List<RoomTypeDto> roomTypes) {
         this.roomTypes = roomTypes;
     }
+    public static class RoomTypeDto {
+        private String roomType;
+        private int maxAdults;
+        private double pricePerPerson;
+        private int amountOfRooms;
+
+        public float getPricePerPerson() {
+            return (float) pricePerPerson;
+        }
+
+        public void setPricePerPerson(double pricePerPerson) {
+            this.pricePerPerson = pricePerPerson;
+        }
+
+        public String getRoomType() {
+            return roomType;
+        }
+
+        public void setRoomType(String roomType) {
+            this.roomType = roomType;
+        }
+
+        public int getMaxAdults() {
+            return maxAdults;
+        }
+
+        public void setMaxAdults(int maxAdults) {
+            this.maxAdults = maxAdults;
+        }
+
+        public int getAmountOfRooms() {
+            return amountOfRooms;
+        }
+
+        public void setAmountOfRooms(int amountOfRooms) {
+            this.amountOfRooms = amountOfRooms;
+        }
+    }
+
+
 }
