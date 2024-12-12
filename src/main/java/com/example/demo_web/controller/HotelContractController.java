@@ -1,6 +1,7 @@
 package com.example.demo_web.controller;
 
 import com.example.demo_web.dto.HotelContractDto;
+import com.example.demo_web.exception.ResourceNotFoundException;
 import com.example.demo_web.service.HotelContractService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -14,6 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+
+
+@CrossOrigin(origins = "http://localhost:4200") // Allow Angular frontend
 
 @RestController
 @RequestMapping("/api/v1/contract")
@@ -29,7 +34,11 @@ public class HotelContractController {
     @GetMapping
     public ResponseEntity<List<HotelContractDto>> getContractsWithRoomTypes() {
         List<HotelContractDto> contracts = contractService.getContractsWithRoomTypes();
+        if (contracts.isEmpty()) {
+            throw new ResourceNotFoundException("No contracts found");
+        }
         return ResponseEntity.ok(contracts);
+
     }
 
 
@@ -37,25 +46,18 @@ public class HotelContractController {
     public ResponseEntity<HotelContractDto> submitContract(@Valid @RequestBody HotelContractDto dto) {
         return new ResponseEntity<>(contractService.saveContractWithRooms(dto), HttpStatus.CREATED);
     }
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(error -> {
-            errors.put(error.getField(), error.getDefaultMessage());
-        });
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-    }
+
     @PutMapping("/{contractId}/markup")
     public ResponseEntity<String> updateMarkupPercentage(
             @PathVariable Long contractId,
             @RequestParam double markupPercentage) {
         try {
             contractService.updateMarkupPercentage(contractId, markupPercentage);
-            return ResponseEntity.ok("Markup percentage updated successfully.");
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.ok("Markup percentage updated successfully");
+        } catch (ResourceNotFoundException ex) {
+            throw new ResourceNotFoundException("Contract with ID " + contractId + " not found");
+        } catch (Exception ex) {
+            throw new IllegalArgumentException("Error updating markup percentage: " + ex.getMessage());
         }
     }
 

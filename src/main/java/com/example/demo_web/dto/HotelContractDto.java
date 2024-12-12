@@ -17,10 +17,10 @@ public class HotelContractDto {
     @Size(min = 2, max = 50, message = "Hotel name must be between 2 and 50 characters")
     private String hotelName;
     @NotNull(message = "Contract valid from date is required")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate contractValidFrom;
     @NotNull(message = "Contract valid to date is required")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate contractValidTo;
     @NotNull(message = "Markup percentage is required")
     @Min(value = 0, message = "Markup percentage must be at least 0")

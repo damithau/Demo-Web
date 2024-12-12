@@ -22,7 +22,7 @@ public class HotelSearchController {
         this.searchService = searchService;
     }
 
-    @GetMapping ("/search")
+    @PostMapping ("/search")
     public ResponseEntity<List<SearchResultDto>> searchHotels(@Valid @RequestBody SearchCriteriaDto criteria) {
         List<SearchResultDto> results = searchService.searchHotels(criteria);
         return ResponseEntity.ok(results);

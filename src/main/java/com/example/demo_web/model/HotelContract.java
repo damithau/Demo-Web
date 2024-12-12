@@ -1,6 +1,9 @@
 package com.example.demo_web.model;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -9,13 +12,13 @@ public class HotelContract {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long contractId;
-
+    @Column(nullable = false)
     private String hotelName;
-
+    @Column(nullable = false)
     private LocalDate contractValidFrom;
-
+    @Column(nullable = false)
     private LocalDate contractValidTo;
-
+    @Column(nullable = false)
     private Float markupPercentage;
 
     @OneToMany(mappedBy = "hotelContract", cascade = CascadeType.ALL, orphanRemoval = true)
