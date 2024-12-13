@@ -3,22 +3,16 @@ package com.example.demo_web.controller;
 import com.example.demo_web.dto.HotelContractDto;
 import com.example.demo_web.exception.ResourceNotFoundException;
 import com.example.demo_web.service.HotelContractService;
-import jakarta.persistence.EntityNotFoundException;
+
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-
-
-@CrossOrigin(origins = "http://localhost:4200") // Allow Angular frontend
 
 @RestController
 @RequestMapping("/api/v1/contract")
@@ -31,14 +25,16 @@ public class HotelContractController {
     public HotelContractController(HotelContractService contractService) {
         this.contractService = contractService;
     }
-    @GetMapping
-    public ResponseEntity<List<HotelContractDto>> getContractsWithRoomTypes() {
-        List<HotelContractDto> contracts = contractService.getContractsWithRoomTypes();
-        if (contracts.isEmpty()) {
-            throw new ResourceNotFoundException("No contracts found");
-        }
-        return ResponseEntity.ok(contracts);
 
+
+    // Get contract details by contractId
+    @GetMapping("/{contractId}")
+    public ResponseEntity<HotelContractDto> findContractById(@PathVariable Long contractId) {
+        HotelContractDto contract = contractService.getContractById(contractId);
+        if (contract == null) {
+            throw new ResourceNotFoundException("Contract not found with ID: " + contractId);
+        }
+        return ResponseEntity.ok(contract);
     }
 
 

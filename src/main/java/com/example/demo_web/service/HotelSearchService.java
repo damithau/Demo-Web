@@ -21,51 +21,7 @@ public class HotelSearchService {
         this.contractRepository = contractRepository;
     }
 
-//    public List<SearchResultDto> searchHotels(SearchCriteriaDto criteria) {
-//        LocalDate checkOutDate = criteria.getCheckInDate().plusDays(criteria.getNoOfNights());
-//
-//        List<SearchResultDto> results = new ArrayList<>();
-//
-//        // Query contracts that satisfy date criteria
-//        List<HotelContract> contracts = contractRepository.findValidContracts(
-//                criteria.getCheckInDate(),
-//                checkOutDate
-//        );
-//
-//        for (HotelContract contract : contracts) {
-//            SearchResultDto result = new SearchResultDto();
-//            result.setHotelName(contract.getHotelName());
-//
-//            List<SearchResultDto.RoomTypeResult> roomTypeResults = new ArrayList<>();
-//
-//            for (RoomType roomType : contract.getRoomTypes()) {
-//                // Check if room availability and adults requirement are satisfied
-//                boolean isAvailable = criteria.getRoomRequests().stream().allMatch(request ->
-//                        roomType.getAmountOfRooms() >= request.getNoOfRooms() &&
-//                                roomType.getMaxAdults() == request.getNoOfAdults()
-//                );
-//
-//                if (isAvailable) {
-//                    SearchResultDto.RoomTypeResult roomTypeResult = new SearchResultDto.RoomTypeResult();
-//                    roomTypeResult.setRoomType(roomType.getRoomType());
-//                    roomTypeResult.setMarkedUpPrice(
-//                            (double) (roomType.getPricePerPerson() *
-//                                                                (1 + contract.getMarkupPercentage() / 100) *
-//                                                                criteria.getNoOfNights() *
-//                                                                criteria.getRoomRequests().stream().mapToInt(SearchCriteriaDto.RoomRequest::getNoOfAdults).sum())
-//                    );
-//                    roomTypeResults.add(roomTypeResult);
-//                }
-//            }
-//
-//            result.setRoomTypes(roomTypeResults);
-//            if (!roomTypeResults.isEmpty()) {
-//                results.add(result);
-//            }
-//        }
-//
-//        return results;
-//    }
+
 public List<SearchResultDto> searchHotels(SearchCriteriaDto criteria) {
     LocalDate checkOutDate = criteria.getCheckInDate().plusDays(criteria.getNoOfNights());
     List<SearchResultDto> results = new ArrayList<>();

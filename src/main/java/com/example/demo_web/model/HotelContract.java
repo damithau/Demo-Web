@@ -1,8 +1,7 @@
 package com.example.demo_web.model;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+
 
 import java.time.LocalDate;
 import java.util.List;

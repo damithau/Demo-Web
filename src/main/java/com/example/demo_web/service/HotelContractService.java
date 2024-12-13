@@ -11,10 +11,10 @@ import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,6 +31,16 @@ public class HotelContractService
     public HotelContractService(HotelContractRepository contractRepository)
     {
         this.contractRepository = contractRepository;
+    }
+    // Fetch contract by ID
+    public HotelContractDto getContractById(Long contractId) {
+        Optional<HotelContract> contractOptional = contractRepository.findById(contractId);
+        if (contractOptional.isPresent()) {
+            HotelContract contract = contractOptional.get();
+            return ContractMapper.entityToDto(contract);
+        } else {
+            throw new ContractNotFoundException("Contract with ID " + contractId + " not found.");
+        }
     }
 
     public List<HotelContractDto> getContracts()
@@ -51,7 +61,7 @@ public class HotelContractService
 
     public void deleteContract( Long contractId )
     {
-//        contractRepository.deleteById( contractId );
+
         Optional<HotelContract> contractOptional = contractRepository.findById( contractId );
         if(contractOptional.isPresent())
         {
@@ -105,6 +115,7 @@ public class HotelContractService
                 .map(ContractMapper::entityToDto)
                 .collect(Collectors.toList());
     }
+
 
 
 
