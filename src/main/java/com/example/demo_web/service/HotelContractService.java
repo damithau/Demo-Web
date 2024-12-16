@@ -19,6 +19,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
+/**
+ * Service class responsible for managing hotel contracts and their associated operations.
+ * This service handles fetching, adding, deleting, and updating hotel contracts.
+ */
 @Service
 public class HotelContractService
 {
@@ -27,11 +32,26 @@ public class HotelContractService
 
     private final HotelContractRepository contractRepository;
 
+    /**
+     * Constructor for the HotelContractService class.
+     *
+     * @param contractRepository The repository for accessing hotel contract data.
+     */
     @Autowired
     public HotelContractService(HotelContractRepository contractRepository)
     {
         this.contractRepository = contractRepository;
     }
+
+    /**
+     * Fetches a hotel contract by its ID.
+     * If the contract is found, it is mapped to a DTO and returned.
+     * If not found, throws a {@link ContractNotFoundException}.
+     *
+     * @param contractId The ID of the contract to fetch.
+     * @return A DTO representing the hotel contract.
+     * @throws ContractNotFoundException if no contract with the given ID is found.
+     */
     // Fetch contract by ID
     public HotelContractDto getContractById(Long contractId) {
         Optional<HotelContract> contractOptional = contractRepository.findById(contractId);
@@ -43,6 +63,11 @@ public class HotelContractService
         }
     }
 
+    /**
+     * Fetches all hotel contracts and maps them to DTOs.
+     *
+     * @return A list of DTOs representing all hotel contracts.
+     */
     public List<HotelContractDto> getContracts()
     {
         logger.info( "Getting all contracts" );
@@ -51,7 +76,13 @@ public class HotelContractService
 
         return contracts.stream().map( contract -> {return ContractMapper.entityToDto( contract );} ).toList();
     }
-
+    /**
+     * Adds a new hotel contract.
+     * The contract is saved using the {@link HotelContractRepository} and the saved contract is returned as a DTO.
+     *
+     * @param dto The DTO representing the hotel contract to add.
+     * @return The saved contract represented as a DTO.
+     */
     public HotelContractDto addContract( HotelContractDto dto )
     {
         HotelContract contract = ContractMapper.dtoToEntity( dto );
@@ -59,6 +90,14 @@ public class HotelContractService
         return ContractMapper.entityToDto( saved );
     }
 
+
+    /**
+     * Deletes a hotel contract by its ID.
+     * If the contract with the given ID does not exist, a {@link ContractNotFoundException} is thrown.
+     *
+     * @param contractId The ID of the contract to delete.
+     * @throws ContractNotFoundException if no contract with the given ID exists.
+     */
     public void deleteContract( Long contractId )
     {
 
@@ -72,6 +111,14 @@ public class HotelContractService
             throw new ContractNotFoundException( "Contract with Id" + contractId + " was not found" );
         }
     }
+
+    /**
+     * Saves a hotel contract along with its associated room types.
+     * The room types are mapped from the provided DTO and linked to the contract.
+     *
+     * @param dto The DTO representing the hotel contract with room types.
+     * @return The saved contract and its room types as a DTO.
+     */
     public HotelContractDto saveContractWithRooms(HotelContractDto dto) {
         // Convert DTO to Entity
         HotelContract contract = ContractMapper.dtoToEntity(dto);
@@ -95,6 +142,16 @@ public class HotelContractService
         // Convert Back to DTO
         return ContractMapper.entityToDto(savedContract);
     }
+
+    /**
+     * Updates the markup percentage of a hotel contract.
+     * This operation is transactional, ensuring the update occurs within a single transaction.
+     *
+     * @param contractId The ID of the contract to update.
+     * @param newMarkupPercentage The new markup percentage to set for the contract.
+     * @throws IllegalArgumentException if the new markup percentage is negative.
+     * @throws EntityNotFoundException if no contract with the given ID exists.
+     */
     @Transactional
     public void updateMarkupPercentage(Long contractId, double newMarkupPercentage) {
         if (newMarkupPercentage < 0) {
@@ -107,6 +164,12 @@ public class HotelContractService
             throw new EntityNotFoundException("No contract found with ID: " + contractId);
         }
     }
+
+    /**
+     * Fetches all hotel contracts with their associated room types and returns them as DTOs.
+     *
+     * @return A list of hotel contract DTOs, each containing associated room types.
+     */
 
 
     public List<HotelContractDto> getContractsWithRoomTypes() {

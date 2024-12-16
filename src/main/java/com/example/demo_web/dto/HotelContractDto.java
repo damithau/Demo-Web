@@ -11,6 +11,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 
+/**
+ * Data Transfer Object (DTO) for hotel contract details.
+ */
 public class HotelContractDto {
     private Long contractId;
     @NotNull(message = "Hotel name is required")
@@ -78,6 +81,10 @@ public class HotelContractDto {
     public void setRoomTypes(List<RoomTypeDto> roomTypes) {
         this.roomTypes = roomTypes;
     }
+
+    /**
+     * Nested DTO class for room type details.
+     */
     public static class RoomTypeDto {
         private String roomType;
         private int maxAdults;

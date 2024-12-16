@@ -12,16 +12,35 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * Service class responsible for searching hotel contracts based on given search criteria.
+ * It performs the search by querying hotel contracts that are valid for the specified dates and checking if
+ * the requested rooms are available with the specified criteria.
+ */
 @Service
 public class HotelSearchService {
 
     private final HotelContractRepository contractRepository;
 
+    /**
+     * Constructor for the HotelSearchService class.
+     *
+     * @param contractRepository The repository for accessing hotel contract data.
+     */
     public HotelSearchService(HotelContractRepository contractRepository) {
         this.contractRepository = contractRepository;
     }
 
 
+    /**
+     * Searches for hotels based on the provided search criteria.
+     * The search includes checking contract validity for the specified dates and ensuring room availability.
+     * For each valid hotel, the method returns a list of available room types with their marked-up price.
+     *
+     * @param criteria The search criteria containing check-in date, number of nights, and room requests.
+     * @return A list of search results, each containing a hotel name and available room types with marked-up prices.
+     */
 public List<SearchResultDto> searchHotels(SearchCriteriaDto criteria) {
     LocalDate checkOutDate = criteria.getCheckInDate().plusDays(criteria.getNoOfNights());
     List<SearchResultDto> results = new ArrayList<>();

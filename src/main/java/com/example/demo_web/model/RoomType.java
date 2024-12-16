@@ -3,6 +3,12 @@ package com.example.demo_web.model;
 
 import jakarta.persistence.*;
 
+
+
+/**
+ * Entity representing a room type in a hotel contract. This class maps to the `room_type` table in the database.
+ * It contains details about the type of room, its price, the number of rooms available, and the maximum number of adults allowed.
+ */
 @Entity
 public class RoomType {
     @Id

@@ -5,6 +5,11 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
+
+/**
+ * Data Transfer Object (DTO) representing the search criteria for hotel searches.
+ * Contains information about the check-in date, number of nights, and room requests.
+ */
 public class SearchCriteriaDto {
 
     @NotNull(message = "Check-in date is required")
@@ -41,7 +46,10 @@ public class SearchCriteriaDto {
     }
 
 
-
+    /**
+     * Nested static class representing a room request within the search criteria.
+     * Contains information about the number of rooms and the number of adults.
+     */
 
 
     public static class RoomRequest {

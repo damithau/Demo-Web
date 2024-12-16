@@ -6,6 +6,10 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Entity representing a hotel contract. This class maps to the `hotel_contract` table in the database.
+ * It contains details about the hotel, contract validity dates, markup percentage, and associated room types.
+ */
 @Entity
 public class HotelContract {
     @Id
@@ -20,15 +24,28 @@ public class HotelContract {
     @Column(nullable = false)
     private Float markupPercentage;
 
+
+    /**
+     * The list of room types associated with the hotel contract.
+     * This is a one-to-many relationship with the `RoomType` entity.
+     * The `hotelContract` field in the `RoomType` entity maps back to this field.
+     */
     @OneToMany(mappedBy = "hotelContract", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RoomType> roomTypes;
 
     // Getters and Setters
-
+    /**
+     * Gets the start date of the contract validity.
+     * @return The contract validity start date.
+     */
     public LocalDate getContractValidFrom() {
         return contractValidFrom;
     }
 
+    /**
+     * Sets the start date of the contract validity.
+     * @param contractValidFrom The contract validity start date to set.
+     *Like wise for all other functions*/
     public void setContractValidFrom(LocalDate contractValidFrom) {
         this.contractValidFrom = contractValidFrom;
     }

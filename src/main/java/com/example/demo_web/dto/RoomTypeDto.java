@@ -6,6 +6,9 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+/**
+ * Data Transfer Object (DTO) representing details of a room type.
+ */
 public class RoomTypeDto {
     @NotNull(message = "Room type name is required")
     @Size(min = 3, max = 20, message = "Room type must be between 3 and 20 characters")

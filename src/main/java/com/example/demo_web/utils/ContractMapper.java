@@ -5,8 +5,19 @@ import com.example.demo_web.model.HotelContract;
 
 import java.util.stream.Collectors;
 
+/**
+ * Utility class responsible for mapping between HotelContract entity and HotelContractDto.
+ * It provides methods to convert a HotelContract entity to its corresponding DTO and vice versa.
+ */
 public class ContractMapper
 {
+
+    /**
+     * Converts a HotelContract entity to a HotelContractDto.
+     *
+     * @param contract The HotelContract entity to be converted.
+     * @return A HotelContractDto representing the data of the given HotelContract entity.
+     */
     public static HotelContractDto entityToDto( HotelContract contract)
     {
         HotelContractDto dto = new HotelContractDto();
@@ -29,6 +40,12 @@ public class ContractMapper
         return dto;
     }
 
+    /**
+     * Converts a HotelContractDto to a HotelContract entity.
+     *
+     * @param dto The HotelContractDto to be converted.
+     * @return A HotelContract entity populated with the data from the given DTO.
+     */
     public static HotelContract dtoToEntity(HotelContractDto dto)
     {
         HotelContract contract = new HotelContract();
